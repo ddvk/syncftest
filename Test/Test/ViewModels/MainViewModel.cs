@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -9,19 +10,10 @@ using Xamarin.Forms.Internals;
 
 namespace Test
 {
-	public class ChildModel : INotifyPropertyChanged
+	public class MainViewModel : INotifyPropertyChanged
 	{
-		public ChildModel()
+		public MainViewModel()
 		{
-			Items = new ObservableCollection<int>();
-		}
-		public ObservableCollection<int> Items { get; set; }
-
-		private LayoutState _currentState = LayoutState.None;
-		public LayoutState CurrentState
-		{
-			get => this._currentState;
-			set => SetField(ref this._currentState, value);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -39,11 +31,20 @@ namespace Test
 			return true;
 		}
 
+		private LayoutState _currentState = LayoutState.None;
+		public LayoutState CurrentState
+		{
+			get => this._currentState;
+			set => SetField(ref this._currentState, value);
+		}
+
+		public ObservableCollection<int> Items { get; set; } = new();
+
 		public async Task Load()
 		{
 			CurrentState = LayoutState.Loading;
 			await Task.Delay(1000);
-			Enumerable.Range(0, 10).ForEach(x=> Items.Add(x));
+			Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
 			CurrentState = LayoutState.None;
 		}
 	}
