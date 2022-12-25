@@ -17,12 +17,12 @@ namespace Test
 			InitializeComponent();
 		}
 
-		private async void TabViewEx_OnSelectionChanged(object sender, Syncfusion.XForms.TabView.SelectionChangedEventArgs e)
+		private  async void TabViewEx_OnSelectionChanged(object sender, Syncfusion.XForms.TabView.SelectionChangedEventArgs e)
 		{
-			if (e.Index == 1)
+			if (e.Index >= 1)
 			{
-				await ((MainViewModel)this.BindingContext).ChildModel.Load();
-			}
+				await ((MainViewModel)this.BindingContext).Load();
+			} 
 		}
 	}
 }
