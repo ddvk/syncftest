@@ -43,8 +43,11 @@ namespace Test
 		public async Task Load()
 		{
 			CurrentState = LayoutState.Loading;
-			await Task.Delay(1000);
+
+			await Task.Delay(300);
+
 			Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
+
 			CurrentState = LayoutState.None;
 		}
 	}

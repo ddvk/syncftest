@@ -1,44 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:tabView="http://xamarin.com/schemas/2020/toolkit"
              xmlns:test="clr-namespace:Test;assembly=Test"
              xmlns:xForms="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:views="http://xamarin.com/schemas/2020/toolkit"
              x:DataType="test:MainViewModel"
              x:Class="Test.MainPage">
 
-        <tabView:SfTabView x:Name="TabViewEx"
-                           TabHeaderPosition="Bottom"
-                           SelectionChanged="TabViewEx_OnSelectionChanged">
-            <tabView:SfTabItem>
-                <tabView:SfTabItem.HeaderContent>
-                    <Label Text="Tab 1" />
-                </tabView:SfTabItem.HeaderContent>
-                <tabView:SfTabItem.Content>
-                    <StackLayout>
-                        <Label>Tab1</Label>
-                    </StackLayout>
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-        <tabView:SfTabItem>
-            <tabView:SfTabItem.HeaderContent>   
-                <Label Text="Crash2" />
-            </tabView:SfTabItem.HeaderContent>
-            <tabView:SfTabItem.Content>
-                    <StackLayout views:StateLayout.CurrentState="{Binding Path=CurrentState}" views:StateLayout.AnimateStateChanges="False">
-                        <views:StateLayout.StateViews>
-                            <views:StateView StateKey="Loading">
-                                <Label Text="Loading data, please wait...child control"/>
-                            </views:StateView>
-                        </views:StateLayout.StateViews>
-                        <xForms:SfListView ItemsSource="{Binding Path=Items}"
-                                           AutoFitMode="DynamicHeight"
-                                           LoadMoreOption="AutoOnScroll">
-                        </xForms:SfListView>
-                    </StackLayout>
-            </tabView:SfTabItem.Content>
-        </tabView:SfTabItem>
-         
-    </tabView:SfTabView>
+       
+            <StackLayout>
+                <Button Text="Crash Me" Clicked="Button_OnClicked"></Button>
+                <StackLayout views:StateLayout.CurrentState="{Binding Path=CurrentState}" views:StateLayout.AnimateStateChanges="False" >
+                    <views:StateLayout.StateViews>
+                        <views:StateView StateKey="Loading">
+                            <Label Text="Loading data, please wait..."/>
+                        </views:StateView>
+                    </views:StateLayout.StateViews>
+                    <xForms:SfListView x:Name="listView"
+                                       ItemsSource="{Binding Path=Items}"
+                                       AutoFitMode="DynamicHeight"
+                    >
+            </xForms:SfListView>
+
+        </StackLayout>
+            </StackLayout>
 </ContentPage>
