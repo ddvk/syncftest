@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.UI.Views;
 using Xamarin.Forms;
+using ScrollToPosition = Syncfusion.ListView.XForms.ScrollToPosition;
 
 namespace Test
 {
@@ -17,12 +19,12 @@ namespace Test
 			InitializeComponent();
 		}
 
-		private  async void TabViewEx_OnSelectionChanged(object sender, Syncfusion.XForms.TabView.SelectionChangedEventArgs e)
+		private async void Button_OnClicked(object sender, EventArgs e)
 		{
-			if (e.Index >= 1)
-			{
-				await ((MainViewModel)this.BindingContext).Load();
-			} 
+			await((MainViewModel)this.BindingContext).Load();
+			
+			await Task.Delay(1000);
+			this.listView.LayoutManager.ScrollToRowIndex(50, true);
 		}
 	}
 }
