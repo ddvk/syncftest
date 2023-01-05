@@ -4,8 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.UI.Views;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace Test
@@ -40,15 +43,91 @@ namespace Test
 
 		public ObservableCollection<int> Items { get; set; } = new();
 
-		public async Task Load()
+		private string _beforeOperation = null;
+		public string BeforeOperation
 		{
+			get => this._beforeOperation;
+			set => SetField(ref this._beforeOperation, value);
+		}
+
+		private string _duringOperation = null;
+		public string DuringOperation
+		{
+			get => this._duringOperation;
+			set => SetField(ref this._duringOperation, value);
+		}
+
+		private string _afterOperation = null;
+		public string AfterOperation
+		{
+			get => this._afterOperation;
+			set => SetField(ref this._afterOperation, value);
+		}
+
+		public async Task LoadAsync()
+		{
+			this.BeforeOperation = this.DuringOperation = this.AfterOperation = null;
+
+			this.BeforeOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
 			CurrentState = LayoutState.Loading;
 
-			await Task.Delay(300);
-
+			this.DuringOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
 			Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
 
 			CurrentState = LayoutState.None;
+			this.AfterOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+
+			await Task.CompletedTask;
+		}
+
+		public async Task LoadAsyncMainThread()
+		{
+			this.BeforeOperation = this.DuringOperation = this.AfterOperation = null;
+
+			this.BeforeOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+			CurrentState = LayoutState.Loading;
+
+			Device.BeginInvokeOnMainThread(() =>
+			{
+				this.DuringOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+				Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
+			});
+
+			CurrentState = LayoutState.None;
+			this.AfterOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+
+			await Task.CompletedTask;
+		}
+
+		public void LoadSync()
+		{
+			this.BeforeOperation = this.DuringOperation = this.AfterOperation = null;
+
+			this.BeforeOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+			CurrentState = LayoutState.Loading;
+
+			this.DuringOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+			Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
+
+			CurrentState = LayoutState.None;
+			this.AfterOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+		}
+
+		public void LoadSyncMainThread()
+		{
+			this.BeforeOperation = this.DuringOperation = this.AfterOperation = null;
+
+			this.BeforeOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+			CurrentState = LayoutState.Loading;
+
+			Device.BeginInvokeOnMainThread(() =>
+			{
+				this.DuringOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
+				Enumerable.Range(0, 100).ForEach(x => Items.Add(x));
+			});
+
+			CurrentState = LayoutState.None;
+			this.AfterOperation = MainThread.IsMainThread ? "on main thread" : "on other thread";
 		}
 	}
 }
