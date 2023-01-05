@@ -8,21 +8,48 @@
              x:DataType="test:MainViewModel"
              x:Class="Test.MainPage">
 
-       
-            <StackLayout>
-                <Button Text="Crash Me" Clicked="Button_OnClicked"></Button>
-                <StackLayout views:StateLayout.CurrentState="{Binding Path=CurrentState}" views:StateLayout.AnimateStateChanges="False" >
-                    <views:StateLayout.StateViews>
-                        <views:StateView StateKey="Loading">
-                            <Label Text="Loading data, please wait..."/>
-                        </views:StateView>
-                    </views:StateLayout.StateViews>
-                    <xForms:SfListView x:Name="listView"
+
+	<StackLayout>
+		<Button Text="Async" Clicked="Button_OnClickedAsync"></Button>
+		<Button Text="Async Main Thread" Clicked="Button_OnClickedAsyncMainThread"></Button>
+		<Button Text="Sync" Clicked="Button_OnClickedSync"></Button>
+		<Button Text="Sync Main Thread" Clicked="Button_OnClickedSyncMainThread"></Button>
+		<Label>
+			<Label.FormattedText>
+				<FormattedString>
+					<Span Text="Before operation: " FontAttributes="Bold" />
+					<Span Text="{Binding BeforeOperation}" />
+				</FormattedString>
+			</Label.FormattedText>
+		</Label>
+		<Label>
+			<Label.FormattedText>
+				<FormattedString>
+					<Span Text="During operation: " FontAttributes="Bold" />
+					<Span Text="{Binding DuringOperation}" />
+				</FormattedString>
+			</Label.FormattedText>
+		</Label>
+		<Label>
+			<Label.FormattedText>
+				<FormattedString>
+					<Span Text="After operation: " FontAttributes="Bold" />
+					<Span Text="{Binding AfterOperation}" />
+				</FormattedString>
+			</Label.FormattedText>
+		</Label>
+		<StackLayout views:StateLayout.CurrentState="{Binding Path=CurrentState}" views:StateLayout.AnimateStateChanges="False" >
+			<views:StateLayout.StateViews>
+				<views:StateView StateKey="Loading">
+					<Label Text="Loading data, please wait..."/>
+				</views:StateView>
+			</views:StateLayout.StateViews>
+			<xForms:SfListView x:Name="listView"
                                        ItemsSource="{Binding Path=Items}"
                                        AutoFitMode="DynamicHeight"
                     >
-            </xForms:SfListView>
+			</xForms:SfListView>
 
-        </StackLayout>
-            </StackLayout>
+		</StackLayout>
+	</StackLayout>
 </ContentPage>
